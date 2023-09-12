@@ -18,7 +18,7 @@
 
 
 <script src="assets/extensions/toastify-js/src/toastify.js"></script>
-<script src="assets/js/pages/toastify.js"></script>
+{{-- <script src="assets/js/pages/toastify.js"></script> --}}
 {{-- {!! Toastr::message() !!} --}}
 
 
@@ -52,7 +52,10 @@ $('body').on('click', '.deleteProduct', function () {
             },
             success: function (data) {
                 row.remove();
+                console.log('Row removed.'); // Add this line for debugging
                 table.draw();
+                console.log('Table redrawn.'); // Add this line for debugging
+
             },
             error: function (data) {
                 console.log('Error:', data);
