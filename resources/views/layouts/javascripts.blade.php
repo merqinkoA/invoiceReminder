@@ -9,18 +9,74 @@
 --}}
 
 
-  <script src="{{asset('assets')}}/js/bootstrap.js"></script>
-    <script src="{{asset('assets')}}/js/app.js"></script>
+<script src="{{asset('assets')}}/js/bootstrap.js"></script>
+<script src="{{asset('assets')}}/js/app.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script> --}}
 
 <script src="{{asset('assets')}}/extensions/jquery/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
 <script src="{{asset('assets')}}/js/pages/datatables.js"></script>
-
-
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+<!-- Include Select2 CSS and JS -->
+{{-- <link href="path-to-select2/dist/css/select2.min.css" rel="stylesheet" />
+<script src="path-to-select2/dist/js/select2.min.js"></script> --}}
 <script src="{{asset('assets')}}/extensions/toastify-js/src/toastify.js"></script>
 {{-- <script src="assets/js/pages/toastify.js"></script> --}}
 {{-- {!! Toastr::message() !!} --}}
+{{-- <script src="{{asset('assets')}}/js/bootstrap.js"></script>
+<script src="{{asset('assets')}}/js/app.js"></script>
+<script src="{{asset('assets')}}/extensions/sweetalert2/sweetalert2.min.js"></script>>
+<script src="{{asset('assets')}}/js/pages/sweetalert2.js"></script>> --}}
+<script src="{{asset('assets')}}/extensions/choices.js/public/assets/scripts/choices.js"></script>
+<script src="{{asset('assets')}}/js/pages/form-element-select.js"></script>
+<script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
 
+<script  type="text/javascript">
+
+// Required For Bootstrap 5 & 4
+// http://bootstrap-tagsinput.github.io/bootstrap-tagsinput/examples/
+
+// $(document).ready(function() {
+
+// $('input[name="tag_input"]').tagsinput({
+//     trimValue: true,
+//     confirmKeys: [13, 44, 32],
+//     focusClass: 'my-focus-class'
+// });
+
+// $('.bootstrap-tagsinput input').on('focus', function() {
+//     $(this).closest('.bootstrap-tagsinput').addClass('has-focus');
+// }).on('blur', function() {
+//     $(this).closest('.bootstrap-tagsinput').removeClass('has-focus');
+// });
+
+// });
+
+// <script  type="text/javascript">
+//     $(function () {
+//       $('input')
+//         .on('change', function (event) {
+//           var $element = $(event.target);
+//           var $container = $element.closest('.example');
+
+//           if (!$element.data('tagsinput')) return;
+
+//           var val = $element.val();
+//           if (val === null) val = 'null';
+//           var items = $element.tagsinput('items');
+
+//           $('code', $('pre.val', $container)).html(
+//             $.isArray(val)
+//               ? JSON.stringify(val)
+//               : '"' + val.replace('"', '\\"') + '"'
+//           );
+//           $('code', $('pre.items', $container)).html(
+//             JSON.stringify($element.tagsinput('items'))
+//           );
+//         })
+//         .trigger('change');
+//     });
+//   </script>
 <script  type="text/javascript">
 
 $(document).ready(function() {
@@ -42,7 +98,7 @@ $("#add_table").on('click', '.delete_row', function() {
       // Hide the loader once the page and its assets have finished loading
       $('.loader').fadeOut('slow');
     });
-    </script>
+</script>
 <script type="text/javascript">
 
 // Get the CSRF token from the meta tag

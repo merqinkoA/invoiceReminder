@@ -25,14 +25,18 @@ Auth::routes();
 // Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/', function () {
-    return view('auth.login');
+    return view('layouts.invoiceReminder.index');
 });
 
 
 Route::resource('invoiceReminder', InvoiceReminderController::class)->middleware('auth');
 Route::resource('vendor', VendorController::class)->middleware('auth');
-Route::delete('/invoiceReminder/{pr_number}', [InvoiceReminderController::class, 'destroy'])->name('invoiceReminder.destroy');
-Route::post('/invoice-reminder/send-email/{pr_number}', [InvoiceReminderController::class, 'sendEmail'])->name('invoiceReminder.sendEmail');
+// Route::post('/invoiceReminder/passData', 'InvoiceReminderController@passData');
+
+
+
+// Route::delete('/invoiceReminder/{pr_number}', [InvoiceReminderController::class, 'destroy'])->name('invoiceReminder.destroy');
+// Route::post('/invoice-reminder/send-email/{pr_number}', [InvoiceReminderController::class, 'sendEmail'])->name('invoiceReminder.sendEmail');
 
 
 Route::resource('dueDate', dueDateController::class)->middleware('auth');

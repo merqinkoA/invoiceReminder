@@ -11,8 +11,7 @@
     <link rel="shortcut icon" href="assets/images/logo/favicon.svg" type="image/x-icon">
     <link rel="shortcut icon" href="assets/images/logo/favicon.png" type="image/png">
 
-<link rel="stylesheet" href="assets/extensions/sweetalert2/sweetalert2.min.css">
-
+    @include('layouts.stylesheet')
 </head>
 
 <body>
@@ -579,11 +578,7 @@
             </footer>
         </div>
     </div>
-    <script src="assets/js/bootstrap.js"></script>
-    <script src="assets/js/app.js"></script>
-
-<script src="assets/extensions/sweetalert2/sweetalert2.min.js"></script>>
-<script src="assets/js/pages/sweetalert2.js"></script>>
+    @include('layouts.javascripts')
 
 </body>
 

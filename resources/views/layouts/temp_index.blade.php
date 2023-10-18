@@ -24,8 +24,8 @@
       height: 100vh;
     }
     .sidebar-wrapper    {
-  width: 300px; /* Adjust the width as needed */
-}
+    width: 300px; /* Adjust the width as needed */
+    }
     .loader-icon {
       width: 50px;
       height: 50px;
@@ -43,24 +43,44 @@
         transform: translateY(-20px);
       }
     }
-    /* Basic styling for the tag input container */
-.tag-input {
-    border: 1px solid #ccc;
-    padding: 5px;
-    display: inline-block;
+
+
+    .bootstrap-tagsinput {
+	margin: 0;
+	width: 100%;
+	padding: 0.5rem 0.75rem 0;
+	font-size: 1rem;
+    line-height: 1.25;
+	transition: border-color 0.15s ease-in-out;
+
+	&.has-focus {
+    background-color: #fff;
+    border-color: #5cb3fd;
+	}
+
+	.label-info {
+		display: inline-block;
+		background-color: #435ebe;
+		padding: 0 .4em .15em;
+		border-radius: .25rem;
+		margin-bottom: 0.4em;
+	}
+
+	input {
+		margin-bottom: 0.5em;
+	}
 }
 
-/* Styling for tags */
-.tag {
-    background-color: #007BFF;
-    color: white;
-    padding: 5px 10px;
-    margin-right: 5px;
-    border-radius: 5px;
-    display: inline-block;
-    cursor: pointer;
+    .bootstrap-tagsinput .tag [data-role="remove"]:after {
+	content: '\00d7';
 }
 
+    .bootstrap-tagsinput .tag {
+      margin-right: 2px;
+      color: white !important;
+      background-color: #25396f;
+      padding: 0.2rem;
+    }
         </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -139,8 +159,29 @@
     </div>
   </div>
 
-
-
+{{--
+  <div class="card-body">
+  <div class="row">
+      <div class="col-md-4 col-12">
+          <button id="success" class="btn btn-outline-success btn-lg btn-block">Success</button>
+      </div>
+      <div class="col-md-4 col-12">
+          <button id="error" class="btn btn-outline-danger btn-lg btn-block">Error</button>
+      </div>
+      <div class="col-md-4 col-12">
+          <button id="warning" class="btn btn-outline-warning btn-lg btn-block">Warning</button>
+      </div>
+  </div>
+  <div class="row mt-3">
+      <div class="col-md-6 col-12">
+          <button id="info" class="btn btn-outline-info btn-lg btn-block">Info</button>
+      </div>
+      <div class="col-md-6 col-12">
+          <button id="question"
+              class="btn btn-outline-secondary btn-lg btn-block">Question</button>
+      </div>
+  </div>
+</div> --}}
 
 
 
@@ -154,7 +195,7 @@
 
 
         @include('layouts.footer')
-        @include('layouts.edit_modal')
+        {{-- @include('layouts.edit_modal') --}}
         @include('layouts.javascripts')
         @stack('custom-scripts')
 </body>

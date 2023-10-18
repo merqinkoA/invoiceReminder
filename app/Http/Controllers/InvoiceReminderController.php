@@ -2,34 +2,97 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\InvoiceReminder;
-use App\models\Vendor;
+use Carbon\Carbon;
+use App\Models\invoice_reminder;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
-use DataTables;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\InvoiceReminderMail;
-use App\Models\Invoice;
-
+use Illuminate\Support\Facades\Config;
+use App\Jobs\SendFirstInvoiceReminderEmail;
 class InvoiceReminderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $invoiceReminders = InvoiceReminder::all();
-        $lastestPRNumber = InvoiceReminder::all()->sortByDesc('pr_number');
-        $lastRecordPRNumber = InvoiceReminder::max('pr_number')+1;
-        // $lastRecordPRNumberNew = $lastRecordPRNumber->pr_number + 1;
-        return view('layouts.invoiceReminder.showAll', compact('invoiceReminders', 'lastRecordPRNumber','lastestPRNumber'));
-
+        //
+        $now = Carbon::now();
+        $timezone = Config::get('app.timezone');
+        $vendors = Vendor::all();
+        $invoice_reminders = Invoice_Reminder::all();
+        return view('layouts.invoiceReminder.index', compact('invoice_reminders','timezone','vendors'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $vendors = Vendor::all();
+        //   return view('invoice_reminders.create');
+        return view('layouts.invoiceReminder.create', compact('vendors'));
+    }
 
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+
+
+    $validatedData = $request->validate([
+        'invoice_number' => 'nullable|numeric',
+        'supplier_name' => 'nullable|string',
+        'currency' => 'nullable|string',
+        'net_value' => 'nullable|string',
+        'pr_number' => 'nullable|string',
+
+    ]);
+
+    $invoiceReminder = new Invoice_Reminder;
+    $invoiceReminder->invoice_number = $validatedData['invoice_number'];
+    $invoiceReminder->supplier_name = $validatedData['supplier_name'];
+    $invoiceReminder->currency = $validatedData['currency'];
+    $invoiceReminder->net_value = $validatedData['net_value'];
+    $invoiceReminder->pr_number = $validatedData['pr_number']?? null;
+    $invoiceReminder->pi_submitted = $request->has('pi_submitted');
+    $invoiceReminder->save();
+   // Calculate submission date and reminder date
+    $submissionDate = now();
+    $reminderDate = $submissionDate->addDays(3);
+    // $selectedVendor = Vendor::find($request->supplier_name);
+
+        if (!$request->has('pi_submitted') || !$request->input('pi_submitted')) {
+            // Find all vendors with the same supplier_name
+            $invoiceReminder->pi_submitted_date = $submissionDate;
+            $invoiceReminder->save();
+
+            // $vendors = Vendor::where('id', $request->supplier_name)->first();
+            // if ($vendors) {
+            //     // Find other vendors with the same supplier_name
+            //     $relatedVendors = Vendor::where('company_name', $vendors->company_name)->get();
+
+            //     // Collect the email addresses from the related vendors
+            //     $relatedEmails = $relatedVendors->pluck('email');
+
+            //     // Join the email addresses into a single string with commas
+            //     $vendorEmails = $relatedEmails->implode(', ');
+
+            //     // Now, $emailsString contains all email addresses from vendors with the same supplier_name
+            // }
+            // SendFirstInvoiceReminderEmail::dispatch($vendorEmails, $reminderDate);
+
+        }
+        // dd($emailsString);
+    // return redirect()->route('layouts.invoiceReminder.index')->with('success', 'Invoice Reminder created successfully.');
+
+    return redirect()->route('invoiceReminder.index')
+    ->withSuccess('Invoice has been created successfully.');//
+
+    }
     public function sendEmail(Request $request, int $pr_number)
     {
-        $invoiceReminder = InvoiceReminder::findOrFail($pr_number);
+        $invoiceReminder = invoice_reminder::findOrFail($pr_number);
         $Vendors = Vendor::all();
         $emailRecipients=
         $recipients = [
@@ -48,148 +111,97 @@ class InvoiceReminderController extends Controller
         ];
 
         // Send the email using the Mailable class
-        Mail::to('merqinko.a@gmail.com')->send(new InvoiceReminderMail($emailData));
+        Mail::to('merqinko.a@gmail.com,merqinko@gmail.com')->send(new InvoiceReminderMail($emailData));
 
         return redirect()->back()->with('success', 'Email sent successfully');
     }
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('layouts.create');
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-   public function store(Request $request)
-{
-    $data = $request->validate([
-        'pr_number' => 'required',
-        'supplier_name' => 'required',
-        'pr_type' => 'nullable',
-        'pr_approved' => 'nullable|boolean',
-        'po_number' => 'nullable',
-        'invoice_date' => 'nullable|date',
-        'invoice_received_date' => 'nullable|date',
-        'bast_status' => 'nullable|boolean',
-        'invoice_submission_deadline' => 'nullable|date',
-        'invoice_submitted_date' => 'nullable|date',
-        'finance_reminder' => 'nullable|integer',
-        'finance_status' => 'required|in:Done,MIRO,Pending,Unknown',
-    ]);
-
-    // Convert checkbox values to boolean
-    $data['pr_approved'] = $request->has('pr_approved');
-    $data['bast_status'] = $request->has('bast_status');
-    // dd($request->all());
-    InvoiceReminder::updateOrCreate( ['pr_number' => $data['pr_number']],$data);
-
-    return redirect('invoiceReminder')->with('success', 'Invoice created');
-}
-
-    /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(invoice_reminder $invoice_reminder)
     {
-        return view('layouts.show', compact('invoiceReminder'));
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(InvoiceReminder $invoiceReminder)
-    {
-        // $invoiceReminder = InvoiceReminder::findOrFail($pr_number);
-        // return view('layouts.edit', compact('invoiceReminder'));
+    public function edit(string $id)
+    {$vendors = Vendor::all();
 
-        // $where = array('id' => $request->id);
-        // $employee  = InvoiceReminder::where($where)->first();
+            // Load the specific invoice_reminder record by its ID
+            $invoice_reminder = invoice_reminder::find($id);
 
-        // return Response()->json($employee);
-        // return view('layouts.invoiceReminder.edit_invoice',compact('pr_number'));
-        return view('layouts.invoiceReminder.edit_invoice', compact('invoiceReminder'));
+            if (!$invoice_reminder) {
+                // Handle the case where the record does not exist
+                return redirect()->route('invoiceReminder.index')->with('error', 'Invoice Reminder not found');
+            }
 
-
-    }
-
+            return view('layouts.invoiceReminder.edit', compact('invoice_reminder','vendors'));
+        }
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, int $pr_number)
-    {
 
+     public function update(Request $request, int $invoice_reminder)
+{
+    $validatedData = $request->validate([
+        'invoice_number' => 'required|numeric',
+        'supplier_name' => 'nullable|string',
+        'currency' => 'required|string',
+        'net_value' => 'nullable|string',
+        'pr_number' => 'nullable|string',
+        'due_date' => 'nullable|date',
+        'ses_migo_date' => 'nullable|date',
+        'po_number' => 'nullable|string',
+        'ses_migo_number' => 'nullable|string',
+        'finance_status' => 'nullable|in:Done,MIRO,Clearing,Unknown',
+    ]);
 
+    $invoice_reminder = invoice_reminder::findOrFail($invoice_reminder);
+    $invoice_reminder->invoice_number = $validatedData['invoice_number'];
+    $invoice_reminder->supplier_name = $validatedData['supplier_name'];
+    $invoice_reminder->currency = $validatedData['currency'];
+    $invoice_reminder->net_value = $validatedData['net_value'];
+    $invoice_reminder->pi_submitted = $request->has('pi_submitted');
+    $invoice_reminder->pr_number = $validatedData['pr_number'];
 
-        $invoiceReminder
-         = InvoiceReminder::findOrFail($pr_number);
-        $request->validate([
-            'supplier_name' => 'required',
-            // Add validation rules for other fields
-        ]);
-
-        $invoiceReminder->update($request->all());
-
-        return redirect('invoiceReminder')
-            ->with('success', 'Invoice reminder updated successfully.');
-
-        // $post = InvoiceReminder::find($pr_number);
-
-        // $post->supplier_name =  $request->input('supplier_name');
-        // $post->pr_type =  $request->input('pr_type');
-        // $post->pr_approved =  $request->input('pr_approved');
-        // $post->po_number =  $request->input('po_number');
-        // $post->invoice_date =  $request->input('invoice_date');
-        // $post->invoice_received_date =  $request->input('invoice_received_date');
-        // $post->bast_status =  $request->input('bast_status');
-        // $post->invoice_submission_deadline =  $request->input('invoice_submission_deadline');
-        // $post->invoice_submitted_date =  $request->input('invoice_submitted_date');
-        // $post->finance_reminder =  $request->input('finance_reminder');
-        // $post->finance_status =  $request->input('finance_status');
-
-
-        // $post->save();
-        // return redirect('/')->with('success', 'Invoice updated successfully');
-
-        // return redirect()->route('post.index')->with('message', "post updated successfully");
-    //     $invoiceReminder = InvoiceReminder::findOrFail();
-
-
-    //     // Validate the request data
-    //     $validatedData = $request->validate([
-    //         'supplier_name' => 'required',
-    //         'pr_type' => 'nullable|string',
-    //         'pr_approved' => 'boolean',
-    //         'po_number' => 'nullable|numeric',
-    //         'invoice_date' => 'nullable|date',
-    //         'invoice_received_date' => 'nullable|date',
-    //         'bast_status' => 'boolean',
-    //         'invoice_submission_deadline' => 'nullable|date',
-    //         'invoice_submitted_date' => 'nullable|date',
-    //         'finance_reminder' => 'nullable|numeric',
-    //         'finance_status' => 'nullable|string',
-    //     ]);
-
-    //     // Update the invoice reminder with the validated data
-    //     $invoiceReminder->update($validatedData);
-
-    //     // Redirect or return a response as needed
-    //     return redirect()->route('your.route')->with('success', 'Invoice reminder updated successfully.');
-    //
-}
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(int $pr_number)
-    {
-        //
-        InvoiceReminder::find($pr_number)->delete();
-        // return redirect()->back()->with('success', 'Data delete successfully');
-        return response()->json(['success'=>'Product deleted successfully.']);
-        // return redirect('/')->with('success', 'Invoice created ');
-
+    if (isset($validatedData['due_date'])) {
+        $invoice_reminder->due_date = $validatedData['due_date'];
     }
+
+    $invoice_reminder->ses_migo_date = $validatedData['ses_migo_date'];
+    $invoice_reminder->invoice_submitted = $request->has('invoice_submitted');
+    $invoice_reminder->po_number = $validatedData['po_number'];
+    $invoice_reminder->ses_migo_number = $validatedData['ses_migo_number'];
+
+    if (isset($validatedData['finance_status'])) {
+        $invoice_reminder->finance_status = $validatedData['finance_status'];
+    }
+
+    $invoice_reminder->save();
+
+    // Check if pi_submitted is true or checked
+    if ($request->has('pi_submitted')) {
+        $invoice_reminder->pi_submitted_date = now();
+        $invoice_reminder->save();
+    }
+    // Check if invoice_submitted is true or checked
+    if ($request->has('invoice_submitted')) {
+        $invoice_reminder->invoice_submitted_date = now();
+        $invoice_reminder->save();
+    }
+
+    return redirect()->route('invoiceReminder.index')->with('success', 'Invoice Reminder updated successfully.');
+}
+
+
+    public function destroy(Request $request, int $invoice_Reminder)
+    {
+        $test=invoice_reminder::where('ir_id', $invoice_Reminder)->delete();
+        // $invoice_reminder->where('ir_id', $invoice_reminder->ir_id)->update(['delete_status' => 1]);
+// dd($invoice_Reminder);
+        return redirect()->route('invoiceReminder.index')->with('success', 'Invoice Reminder deleted successfully.');
+    }
+
 }

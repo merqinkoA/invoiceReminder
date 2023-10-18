@@ -79,7 +79,28 @@
 </div>
 </div>
 
-
+<div class="card-body">
+    <div class="row">
+        <div class="col-md-4 col-12">
+            <button id="success" class="btn btn-outline-success btn-lg btn-block">Success</button>
+        </div>
+        <div class="col-md-4 col-12">
+            <button id="error" class="btn btn-outline-danger btn-lg btn-block">Error</button>
+        </div>
+        <div class="col-md-4 col-12">
+            <button id="warning" class="btn btn-outline-warning btn-lg btn-block">Warning</button>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-6 col-12">
+            <button id="info" class="btn btn-outline-info btn-lg btn-block">Info</button>
+        </div>
+        <div class="col-md-6 col-12">
+            <button id="question"
+                class="btn btn-outline-secondary btn-lg btn-block">Question</button>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="ajaxModel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

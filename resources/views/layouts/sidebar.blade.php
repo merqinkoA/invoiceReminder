@@ -3,7 +3,7 @@
         <div class="sidebar-header position-relative">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="logo">
-                    <a href="index.html"><img src="{{ asset('assets') }}/images/logo/stm_logo.png" alt="Logo"
+                    <a href="/"><img src="{{ asset('assets') }}/images/logo/stm_logo.png" alt="Logo"
                             srcset=""></a>
                 </div>
                 <div class="theme-toggle d-flex gap-2  align-items-center mt-2">
@@ -48,17 +48,18 @@
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
 
-                <li class="sidebar-item {{ request()->is('/') ? 'active':'' }} ">
+                {{-- <li class="sidebar-item {{ request()->is('/') ? 'active':'' }} ">
                     <a href="{{route('invoiceReminder.index')}}" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
                     </a>
 
-                </li>
-                <li class="sidebar-item has-sub  ">
+                </li> --}}
+                <li class="sidebar-item   ">
+                {{-- <li class="sidebar-item has-sub  "> --}}
                     <a href="{{route('invoiceReminder.index') }}" class='sidebar-link'>
                         <i class="bi bi-receipt"></i>
-                        <span>Invoice</span>
+                        <span>Invoices</span>
                     </a>
                     <ul class="submenu  ">
                         <li class="submenu-item active">
