@@ -3,7 +3,7 @@
 
 <div class="card">
     <div class="card-header">
-        Due Date List
+  Invoice Reminder List
         <button type="button" class="btn btn-outline-primary block" data-bs-toggle="modal"
         data-bs-target="#exampleModalCenter">
         create new
@@ -18,6 +18,7 @@
         <table class="table compact" id="tableInvoiceReminder" style="width:100%" >
             <thead>
                 <tr>
+                    <th>Action</th>
                     <th>PR Number</th>
                     <th>Supplier Name</th>
                     <th>PR Type</th>
@@ -27,10 +28,9 @@
                     <th>Invoice Receive Date</th>
                     <th>BAST Status</th>
                     <th>Invoice Submission Deadline</th>
-                    <th>Status</th>
-                    <th>Phone</th>
-                    <th>City</th>
-                    <th>Status</th>
+                    <th>invoice Submitted Date</th>
+                    <th>Finance Reminder</th>
+                    <th>Finance Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,16 +49,25 @@
                     <td>{{ $data->pr_number }}</td>
                     <td>{{ $data->supplier_name }}</td>
                     <td>{{ $data->pr_type }}</td>
-                    <td>{{ $data->pr_approved }}</td>
+                    <td><span type="button" class="btn rounded-pill btn-{{ $data->pr_approved ? 'success' : 'danger' }} btn-xs py-0 small">{{ $data->pr_approved ? 'Approved' : 'Pending' }}</span></td>
                     <td>{{ $data->po_number }}</td>
                     <td>{{ $data->invoice_date }}</td>
                     <td>{{ $data->invoice_received_date }}</td>
-                    <td>{{ $data->bast_status }}</td>
+
+                    <td><span type="button" class="btn rounded-pill btn-{{ $data->bast_status ? 'success' : 'danger' }} btn-xs py-0 small">{{ $data->bast_status ? 'Approved' : 'Pending' }}</span></td>
                     <td>{{ $data->invoice_submission_deadline }}</td>
                     <td>{{ $data->invoice_submitted_date }}</td>
                     <td>{{ $data->finance_reminder }}</td>
-                    <td>{{ $data->finance_status }}</td>
-                </tr>
+                   <td> @if($data->finance_status == 'Done')
+                    <span type="button" class="btn rounded-pill btn-xs py-0  btn-success small">Done</span>
+                    @elseif($data->finance_status == 'MIRO')
+                        <span type="button" class="btn rounded-pill btn-xs py-0  btn-primary small">MIRO</span>
+                    @elseif($data->finance_status == 'Pending')
+                        <span type="button" class="btn rounded-pill btn-xs py-0  btn-danger small">Pending</span>
+                    @else
+                        <span type="button" class="btn rounded-pill btn-xs py-0  btn-dark small">Unknown</span>
+                    @endif
+                </td>  </tr>
             @endforeach
             @else
             <td colspan="13" class="text-center"><h4 class="my-4">You have no invoice data has due date yet!! Please create set some..</h4></td>

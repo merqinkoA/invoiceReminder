@@ -33,7 +33,7 @@ class InvoiceReminderMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Invoice Reminder Mail',
+            subject: 'Invoice Submit Reminder ',
         );
     }
 

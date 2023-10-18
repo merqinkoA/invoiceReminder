@@ -50,11 +50,12 @@
             <div class="header">
 
                 <img src="https://sumbawatimurmining.co.id/wp-content/uploads/2020/04/stm-logo-280.png" alt="Logo">
-                <img src = "{{asset('assets')}}/images/svg-loaders/hearts.svg" alt="My Happy SVG"/>
+                {{-- <img src = "{{asset('assets')}}/images/svg-loaders/hearts.svg" alt="My Happy SVG"/> --}}
                 <h2>Invoice Reminder</h2></div>
         </div>
-        <p>Dear User,</p>
-        <p>This is a sample email template.</p>
+        <p>Dear Bapak/Bu {{ $emailData['supplier_name']}} </p>
+        <p>Dengan Hormat,</p>
+        <p>Mohon bantuannya untuk dapat disubmit promorma/draft invoice Periode {{ $emailData['pr_number'] }} </p>
         <table class="data-table">
             <tr>
                 <th>PR Number</th>

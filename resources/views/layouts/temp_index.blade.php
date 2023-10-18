@@ -6,25 +6,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice Reminder</title>
     @include('layouts.stylesheet')
+    <link rel="shortcut icon" href="{{ asset('assets') }}/images/logo/stm_logo_new.png" type="image/png">
+    <style type="text/css">
+        /* body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        } */
+    .loader {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .sidebar-wrapper    {
+  width: 300px; /* Adjust the width as needed */
+}
+    .loader-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-image: url("assets/images/logo/stm_logo.png");
+      background-size: cover;
+      animation: bounce 1s infinite alternate;
+    }
 
+    @keyframes bounce {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(-20px);
+      }
+    }
+    /* Basic styling for the tag input container */
+.tag-input {
+    border: 1px solid #ccc;
+    padding: 5px;
+    display: inline-block;
+}
+
+/* Styling for tags */
+.tag {
+    background-color: #007BFF;
+    color: white;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border-radius: 5px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+        </style>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
-    <div id="app">
-        @include('layouts.sidebar')
+    @include('layouts.sidebar')
+    <div class="loader">
+        <div class="logo">
+            <a href="index.html">
+                <div class="loader-icon"></div>
+            </a>
+        </div>
 
+    </div>
+
+    <!-- Loading bar structure -->
+
+    </div>
         <div id="main">
+
+            <div class="loader">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="{{ asset('assets') }}/images/logo/stm_logo_new.png" alt="Logo" srcset="">
+                    </a>
+                </div>
+                <div class="loader-icon"></div>
+            </div>
+
             <header class="mb-3">
                 <a href="#" class="burger-btn d-block d-xl-none">
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header>
-            <div class="card">
+
+            {{-- <div class="card">
                 <div class="card-body py-4 px-4">
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="d-flex align-items-center">
                             <div class="avatar avatar-xl">
-                                <img src="assets/images/faces/4.jpg" alt="Face 1">
+                                <img src="{{ asset('assets') }}/images/faces/4.jpg" alt="Face 1">
                             </div>
                             <div class="ms-3 name">
                                 <h5 class="font-bold">{{ Auth::user()->name }}</h5>
@@ -49,9 +127,17 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
-                    @yield('content')
+              <!-- Content Wrapper. Contains page content -->
+  <div class="main-content">
+    <div class="content-wrapper">
+
+      <!-- Main content -->
+      @yield('content')
+      <!-- /.content -->
+    </div>
+  </div>
 
 
 
@@ -65,34 +151,12 @@
 
         </div>
         </div>
+
+
         @include('layouts.footer')
         @include('layouts.edit_modal')
         @include('layouts.javascripts')
-
-        {{-- <script  type="text/javascript">
-
-
-            @if(Session::has('success'))
-                    toastr.success("{{ Session::get('success') }}");
-            @endif
-
-
-            @if(Session::has('info'))
-                    toastr.info("{{ Session::get('info') }}");
-            @endif
-
-
-            @if(Session::has('warning'))
-                    toastr.warning("{{ Session::get('warning') }}");
-            @endif
-
-
-            @if(Session::has('error'))
-                    toastr.error("{{ Session::get('error') }}");
-            @endif
-
-
-          </script> --}}
+        @stack('custom-scripts')
 </body>
 
 </html>

@@ -9,20 +9,40 @@
 --}}
 
 
-  <script src="assets/js/bootstrap.js"></script>
-    <script src="assets/js/app.js"></script>
+  <script src="{{asset('assets')}}/js/bootstrap.js"></script>
+    <script src="{{asset('assets')}}/js/app.js"></script>
 
-<script src="assets/extensions/jquery/jquery.min.js"></script>
+<script src="{{asset('assets')}}/extensions/jquery/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
-<script src="assets/js/pages/datatables.js"></script>
+<script src="{{asset('assets')}}/js/pages/datatables.js"></script>
 
 
-<script src="assets/extensions/toastify-js/src/toastify.js"></script>
+<script src="{{asset('assets')}}/extensions/toastify-js/src/toastify.js"></script>
 {{-- <script src="assets/js/pages/toastify.js"></script> --}}
 {{-- {!! Toastr::message() !!} --}}
 
+<script  type="text/javascript">
+
+$(document).ready(function() {
 
 
+
+$("#add_table").on('click', '.delete_row', function() {
+  $(this).closest('tr').remove();
+});
+
+});
+
+
+</script>
+<script type="text/javascript">
+
+
+    $(window).on('load', function() {
+      // Hide the loader once the page and its assets have finished loading
+      $('.loader').fadeOut('slow');
+    });
+    </script>
 <script type="text/javascript">
 
 // Get the CSRF token from the meta tag
@@ -32,14 +52,117 @@ var table = $('#tableInvoiceReminder').DataTable({
         {"className": "dt-center", "targets": "_all"}
       ]
   });
-$('body').on('click', '.editProduct', function () {
-    var pr_number = $(this).data('pr_number');
-    $.get("/invoiceReminder/" + product_id + "/edit", function (data) {
-        // Handle the edit operation
-    });
-});
 
-$('body').on('click', '.deleteProduct', function () {
+// $('body').on('click', '.editProduct', function () {
+
+//     var pr_number = $(this).data('pr_number');
+//     $.get("/invoiceReminder/" + pr_number + "/edit", function (data) {
+
+
+//         // Handle the edit operation
+//     });
+// });
+const form = document.getElementById('insertForm');
+$('.editInvoice').on('click', function() {
+
+    // Example usage: Change the form action when a button is clicked
+
+
+//     var button = $(this);
+//     var id = button.data('id');
+//     var prNumber = button.data('pr-number');
+//     var supplierName = button.data('supplier-name');
+//     var prType = button.data('pr-type');
+//     var prApproved = button.data('pr-approved');
+//     var poNumber = button.data('po-number');
+//     var invoiceDate = button.data('invoice-date');
+//     var invoiceReceivedDate = button.data('invoice-received-date');
+//     var bastStatus = button.data('bast-status');
+//     var invoiceSubmissionDeadline = button.data('invoice-submission-deadline');
+//     var invoiceSubmittedDate = button.data('invoice-submitted-date');
+//     var financeReminder = button.data('finance-reminder');
+//     var financeStatus = button.data('finance-status');
+//     // Set the values in the modal form
+//     $('#editId').val(id);
+//     $('#pr_number').val(prNumber);
+//     $('#supplier_name').val(supplierName);
+//     $('#pr_type').val(prType);
+//     $('#pr_approved').prop('checked', prApproved);
+//     $('#po_number').val(poNumber);
+//     $('#invoice_date').val(invoiceDate);
+//     $('#invoice_received_date').val(invoiceReceivedDate);
+//     $('#bast_status').prop('checked', bastStatus);
+//     $('#invoice_submission_deadline').val(invoiceSubmissionDeadline);
+//     $('#invoice_submitted_date').val(invoiceSubmittedDate);
+//     $('#finance_reminder').val(financeReminder);
+//     $('#finance_status').val(financeStatus);
+//       // Update the data using AJAX
+
+
+// });
+
+
+    var button = $(this);
+    var id = button.data('id');
+    var prNumber = button.data('pr-number');
+    var supplierName = button.data('supplier-name');
+    var prType = button.data('pr-type');
+    var prApproved = button.data('pr-approved');
+    var poNumber = button.data('po-number');
+    var invoiceDate = button.data('invoice-date');
+    var invoiceReceivedDate = button.data('invoice-received-date');
+    var bastStatus = button.data('bast-status');
+    var invoiceSubmissionDeadline = button.data('invoice-submission-deadline');
+    var invoiceSubmittedDate = button.data('invoice-submitted-date');
+    var financeReminder = button.data('finance-reminder');
+    var financeStatus = button.data('finance-status');
+    // Set the values in the modal form
+    $('#editId').val(id);
+    $('#editPrNumber').val(prNumber);
+    $('#editSupplierName').val(supplierName);
+    $('#editPrType').val(prType);
+    $('#editPrApproved').prop('checked', prApproved);
+    $('#editPoNumber').val(poNumber);
+    $('#editInvoiceDate').val(invoiceDate);
+    $('#editInvoiceReceivedDate').val(invoiceReceivedDate);
+    $('#editBastStatus').prop('checked', bastStatus);
+    $('#editInvoiceSubmissionDeadline').val(invoiceSubmissionDeadline);
+    $('#editInvoiceSubmittedDate').val(invoiceSubmittedDate);
+    $('#editFinanceReminder').val(financeReminder);
+    $('#editFinanceStatus').val(financeStatus);
+      // Update the data using AJAX
+
+    // $('#editBtn').click(function (e) {
+    //     e.preventDefault();
+    //     $(this).html('Sending..');
+    //     var formData = $(this).serializeArray();
+    //         var data = {};
+    //         formData.forEach(function (item) {
+    //             data[item.name] = item.value;
+    //         });
+    //     $.ajax({
+    //       data: $('#invoiceForm').serialize(),
+    //       url: "{{ route('invoiceReminder.update', ['invoiceReminder' => 'YourPrNumber'])}}",
+    //       type: "POST",
+    //       data: 'json',
+    //       success: function (data) {
+
+    //         //   $('#productForm').trigger("reset");
+    //           $('#ajaxModel').modal('hide');
+    //           table.draw();
+
+    //       },
+    //       error: function (data) {
+    //           console.log('Error:', data);
+    //           $('#editBtn').html('Save Changes');
+    //       }
+    //   });
+    // });
+    });
+
+    $('body').on('click', '.deleteProduct', function () {
+        var table = $('#tableInvoiceReminder').DataTable();
+
     var pr_number = $(this).data('pr_number');
     var row = $(this).closest('tr')
     var table = $('#tableInvoiceReminder').DataTable();
@@ -51,10 +174,10 @@ $('body').on('click', '.deleteProduct', function () {
                 'X-CSRF-TOKEN': csrfToken // Include the CSRF token in the request headers
             },
             success: function (data) {
-                row.remove();
+
                 console.log('Row removed.'); // Add this line for debugging
-                table.draw();
-                console.log('Table redrawn.'); // Add this line for debugging
+                // table.draw();
+                table.row(row).remove().draw(); // Use row() method to remove the row and then redraw the DataTable
 
             },
             error: function (data) {
@@ -63,6 +186,8 @@ $('body').on('click', '.deleteProduct', function () {
         });
     }
 });
+
+
 </script>
 
 

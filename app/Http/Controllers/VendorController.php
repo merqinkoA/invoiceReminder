@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\InvoiceReminder;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 
@@ -10,11 +10,11 @@ class VendorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $Vendors = Vendor::all();
-
-        return view('vendor.vendorList', compact('Vendors'));
+        $invoiceReminders = InvoiceReminder::all();
+        return view('vendor.vendorList', compact('Vendors', 'invoiceReminders'));
     }
 
     /**

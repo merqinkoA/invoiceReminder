@@ -11,7 +11,9 @@ class dueDateController extends Controller
      */
     public function index()
     {
-        $invoiceRemindersDueDate = InvoiceReminder::where('pr_approved', true)->get();
+        $invoiceRemindersDueDate = InvoiceReminder::where('pr_approved', true)
+                                                    ->where('bast_status', true)
+                                                    ->get();
         return view('layouts.invoiceReminder.dueDate', compact('invoiceRemindersDueDate'));
     }
 

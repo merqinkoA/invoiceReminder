@@ -24,8 +24,12 @@ Auth::routes();
 
 // Route::get('/', [HomeController::class, 'index'])->name('home');
 
+Route::get('/', function () {
+    return view('auth.login');
+});
 
-Route::resource('/', InvoiceReminderController::class)->middleware('auth');
+
+Route::resource('invoiceReminder', InvoiceReminderController::class)->middleware('auth');
 Route::resource('vendor', VendorController::class)->middleware('auth');
 Route::delete('/invoiceReminder/{pr_number}', [InvoiceReminderController::class, 'destroy'])->name('invoiceReminder.destroy');
 Route::post('/invoice-reminder/send-email/{pr_number}', [InvoiceReminderController::class, 'sendEmail'])->name('invoiceReminder.sendEmail');

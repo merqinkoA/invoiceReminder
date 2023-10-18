@@ -26,6 +26,8 @@ class InvoiceReminder extends Model
         'finance_status',
         'created_at',
         'updated_at',
+        'pr_approved',
+        'bast_status',
     ];
 
     protected $casts = [

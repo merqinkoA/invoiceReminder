@@ -3,7 +3,7 @@
         <div class="sidebar-header position-relative">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="logo">
-                    <a href="index.html"><img src="assets/images/logo/stm_logo.png" alt="Logo"
+                    <a href="index.html"><img src="{{ asset('assets') }}/images/logo/stm_logo.png" alt="Logo"
                             srcset=""></a>
                 </div>
                 <div class="theme-toggle d-flex gap-2  align-items-center mt-2">
@@ -24,8 +24,8 @@
                         </g>
                     </svg>
                     <div class="form-check form-switch fs-6">
-                        <input class="form-check-input  me-0" type="checkbox" id="toggle-dark">
-                        <label class="form-check-label"></label>
+
+                        <label class="form-check-label"> <input class="form-check-input  me-0" type="checkbox" id="toggle-dark"></label>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                         aria-hidden="true" role="img" class="iconify iconify--mdi" width="20"
@@ -49,27 +49,27 @@
                 <li class="sidebar-title">Menu</li>
 
                 <li class="sidebar-item {{ request()->is('/') ? 'active':'' }} ">
-                    <a href="{{route('index')}}" class='sidebar-link'>
+                    <a href="{{route('invoiceReminder.index')}}" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
                     </a>
 
                 </li>
                 <li class="sidebar-item has-sub  ">
-                    <a href="{{ url('dashboard') }}" class='sidebar-link'>
+                    <a href="{{route('invoiceReminder.index') }}" class='sidebar-link'>
                         <i class="bi bi-receipt"></i>
                         <span>Invoice</span>
                     </a>
                     <ul class="submenu  ">
                         <li class="submenu-item active">
-                            <a href="{{route('index')}}">Show All</a>
+                            <a href="{{route('invoiceReminder.index')}}">PR Approval</a>
                         </li>
                         <li class="submenu-item ">
-                            <a href="{{ url('dueDate') }}">Due Date</a>
+                            <a href="{{route('dueDate.index') }}">Done List</a>
                         </li>
-                        <li class="submenu-item ">
-                            <a href="#">Unpaid</a>
-                        </li>
+                        {{-- <li class="submenu-item ">
+                            <a href="#">Finance Approval</a>
+                        </li> --}}
                         {{-- <li class="submenu-item ">
                             <a href="#">Payment Reminders</a>
                         </li> --}}
@@ -79,7 +79,7 @@
                 <li class="sidebar-item  {{ request()->is('index') ? 'active':'' }} ">
                     <a href="{{ url('vendor') }}" class='sidebar-link'>
                         <i class="bi bi-person-lines-fill"></i>
-                        <span>Vendor List <b>beta</b></span>
+                        <span>Vendor List</span>
                     </a>
                 </li>
                 <li class="sidebar-item  ">
@@ -91,7 +91,7 @@
                 <li class="sidebar-item  ">
                     <a href="{{ url('dashboard') }}" class='sidebar-link'>
                         <i class="bi bi-person"></i>
-                        <span>User Manager <b>beta</b></span>
+                        <span>User <b>beta</b></span>
                     </a>
                 </li>
                 <li class="sidebar-item  ">
