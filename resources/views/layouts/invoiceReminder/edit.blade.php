@@ -148,7 +148,7 @@
                                 </div>
                             </div>
 
-                            @if($invoice_reminder->pi_submitted==true)
+                            @if($invoice_reminder->pi_submitted)
 
                             <hr style="height:2px;border-width:0;color:gray;background-color:#0d6efd;">
 
@@ -255,7 +255,7 @@
     </div>
   </div>
 
-
+{{--
 <script  type="text/javascript">
 
 $(document).ready(function() {
@@ -292,7 +292,7 @@ $(document).ready(function() {
         });
     });
 });
-</script>
+</script> --}}
   <script   type="text/javascript">
 
   </script>
@@ -302,8 +302,7 @@ $(document).ready(function() {
 // http://bootstrap-tagsinput.github.io/bootstrap-tagsinput/examples/
 
 $(document).ready(function() {
-
-$('input[name="tag_input"]').tagsinput({
+    $('input[name="pr_number"]').tagsinput({
     trimValue: true,
     confirmKeys: [13, 44, 32],
     focusClass: 'my-focus-class'
@@ -314,7 +313,28 @@ $('.bootstrap-tagsinput input').on('focus', function() {
 }).on('blur', function() {
     $(this).closest('.bootstrap-tagsinput').removeClass('has-focus');
 });
+$('input[name="po_number"]').tagsinput({
+    trimValue: true,
+    confirmKeys: [13, 44, 32],
+    focusClass: 'my-focus-class'
+});
 
+$('.bootstrap-tagsinput input').on('focus', function() {
+    $(this).closest('.bootstrap-tagsinput').addClass('has-focus');
+}).on('blur', function() {
+    $(this).closest('.bootstrap-tagsinput').removeClass('has-focus');
+});
+$('input[name="ses_migo_number"]').tagsinput({
+    trimValue: true,
+    confirmKeys: [13, 44, 32],
+    focusClass: 'my-focus-class'
+});
+
+$('.bootstrap-tagsinput input').on('focus', function() {
+    $(this).closest('.bootstrap-tagsinput').addClass('has-focus');
+}).on('blur', function() {
+    $(this).closest('.bootstrap-tagsinput').removeClass('has-focus');
+});
 });
 </script>
 

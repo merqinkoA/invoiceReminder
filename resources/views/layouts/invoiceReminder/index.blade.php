@@ -31,7 +31,7 @@
         <div class="panel-body">
             <strong>Invoice Reminder List</strong>
             <a href="{{ route('invoiceReminder.create') }}" class="btn btn-primary btn-xs pull-right py-0">Create New Reminder</a>
-            {{-- {{$now}} --}}
+            {{-- {{$now}} --}} <div class="table-responsive">
             <table class="table table-responsive table-bordered table-stripped" id="tableInvoiceReminder" style="margin-top:10px;">
                 <thead>
                     <tr>
@@ -71,12 +71,13 @@
                         </td>
 
                         <td>
-                            <a href="{{ route('invoiceReminder.show',$invoice_reminder->ir_id) }}" class="btn btn-primary btn-xs py-0">Show</a>
-                            <a href="{{ route('invoiceReminder.edit',$invoice_reminder->ir_id) }}" class="btn btn-warning btn-xs py-0"><i class="bi bi-pencil"></i></a>
+                            <a href="{{ route('invoiceReminder.show',$invoice_reminder->ir_id) }}" class="btn btn-sm btn-primary btn-xs py-0"><i class="bi bi-zoom-in"></i>
+                            </a>
+                            <a href="{{ route('invoiceReminder.edit',$invoice_reminder->ir_id) }}" class="btn btn-sm btn-warning btn-xs py-0"><i class="bi bi-pencil"></i></a>
                             <form action="{{ route('invoiceReminder.destroy',$invoice_reminder->ir_id) }}" method="post">
                                 @csrf
                                 @method('delete')
-                                <button type="submit" class="btn btn-danger btn-xs py-0 show_confirm"><i class="bi bi-trash"></i></button>
+                                <button type="submit" class="btn btn-sm btn-danger btn-xs py-0 show_confirm"><i class="bi bi-trash"></i></button>
                             </form>
                         </td>
                     </tr>
@@ -84,6 +85,7 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
 
         </div>
     </div>
@@ -106,26 +108,26 @@
 
 <script type="text/javascript">
 
-    $(document).ready(function () {
-        var table = $('#tableInvoiceReminder').DataTable();
+    // $(document).ready(function () {
+    //     var table = $('#tableInvoiceReminder').DataTable();
 
-        // Add a click event listener to the "Toggle" button
-        $('#tableInvoiceReminder tbody').on('click', 'button.toggle-row', function () {
-            var tr = $(this).closest('tr');
-            var row = table.row(tr);
+    //     // Add a click event listener to the "Toggle" button
+    //     $('#tableInvoiceReminder tbody').on('click', 'button.toggle-row', function () {
+    //         var tr = $(this).closest('tr');
+    //         var row = table.row(tr);
 
-            // Toggle the row's visibility
-            if (row.child.isShown()) {
-                // This row is open, so close it
-                row.child.hide();
-                tr.removeClass('shown');
-            } else {
-                // Open this row
-                row.child(tr.next('.collapsible-row')).show();
-                tr.addClass('shown');
-            }
-        });
-    });
+    //         // Toggle the row's visibility
+    //         if (row.child.isShown()) {
+    //             // This row is open, so close it
+    //             row.child.hide();
+    //             tr.removeClass('shown');
+    //         } else {
+    //             // Open this row
+    //             row.child(tr.next('.collapsible-row')).show();
+    //             tr.addClass('shown');
+    //         }
+    //     });
+    // });
     </script>
 
 <script type="text/javascript">

@@ -40,10 +40,10 @@ class SendReminderEmails extends Command
     public function handle()
     {
         //      Mail::to('merqinko.a@gmail.com')->send(new Reminder1Mail());
-        $invoices = invoice_reminder::whereNotIn('finance_status', ['done', 'clearing'])->get();
+        $invoices = invoice_reminder::whereNotIn('finance_status', ['Done', 'clearing'])->get();
 
         foreach ($invoices as $invoice) {
-            if (!$invoice->pi_submitted && $invoice->created_at->diffInDays(now()) >= 3) {
+            if (!$invoice->pi_submitted ) {
                 // Send the first reminder email to the vendor
                 Mail::to('merqinko.a@gmail.com')->send(new Reminder1Mail());
 
@@ -52,7 +52,7 @@ class SendReminderEmails extends Command
                 $invoice->updated_at = now();
             }
 
-            if ($invoice->pi_submitted && !$invoice->invoice_submitted && $invoice->created_at->diffInDays(now()) >= 3) {
+            if ($invoice->pi_submitted && !$invoice->invoice_submitted) {
                 // Send the second reminder email to the vendor
                 Mail::to('merqinko.a@gmail.com')->send(new Reminder2Mail());
 
@@ -61,7 +61,7 @@ class SendReminderEmails extends Command
                 $invoice->updated_at = now();
             }
 
-            if ($invoice->pi_submitted && $invoice->invoice_submitted && $invoice->created_at->diffInDays(now()) >= 3) {
+            if ($invoice->pi_submitted && $invoice->invoice_submitted) {
                 // Send the third reminder email to the vendor
                 Mail::to('merqinko.a@gmail.com')->send(new Reminder3Mail());
 

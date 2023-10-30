@@ -31,6 +31,7 @@
 <script src="{{asset('assets')}}/js/pages/form-element-select.js"></script>
 <script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
 
+
 <script  type="text/javascript">
 
 // Required For Bootstrap 5 & 4
@@ -217,11 +218,11 @@ $('.editInvoice').on('click', function() {
     });
 
     $('body').on('click', '.deleteProduct', function () {
-        var table = $('#tableInvoiceReminder').DataTable();
+        // var table = $('#tableInvoiceReminder').DataTable();
 
     var pr_number = $(this).data('pr_number');
     var row = $(this).closest('tr')
-    var table = $('#tableInvoiceReminder').DataTable();
+    // var table = $('#tableInvoiceReminder').DataTable();
     if (confirm("Are you sure you want to delete?")) {
         $.ajax({
             type: "DELETE",
