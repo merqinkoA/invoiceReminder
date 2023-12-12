@@ -4,7 +4,11 @@ use App\Http\Controllers\InvoiceReminderController;
 use App\Http\Controllers\dueDateController;
 use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Route;
-
+use App\Models\invoice_reminder;
+use Carbon\Carbon;
+use App\Models\Vendor;
+// use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,7 +29,12 @@ Auth::routes();
 // Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/', function () {
-    return view('layouts.invoiceReminder.index');
+    $now = Carbon::now();
+    $timezone = Config::get('app.timezone');
+    $vendors = Vendor::all();
+    $invoice_reminders = Invoice_Reminder::all();
+    // return view('layouts.invoiceReminder.index', compact('invoice_reminders','timezone','vendors'));
+    return view('layouts.invoiceReminder.index',  compact('invoice_reminders','timezone','vendors'));
 });
 
 

@@ -106,11 +106,11 @@
 
                             <div class="col-md-4 ">
                                 <div class="form-group">
-                                            <input type="number" class="form-control form-control-sm" id="invoice_number" name="invoice_number" required>
+                                            <input type="text" class="form-control form-control-sm" id="invoice_number" name="invoice_number" required>
                                 </div>
                             </div>
                             <div class="col-md-6 ">
-                                <input type="number" class="form-control form-control-sm" id="invoice_number" name="invoice_number" value="">
+                                {{-- <input type="number" class="form-control form-control-sm" id="invoice_number" name="invoice_number" value=""> --}}
 
                             </div>
 
@@ -124,19 +124,55 @@
                             </div> --}}
                             <div class="col-md-6">
                             <div class="form-group">
-                                <label for="supplier_name">Select Supplier:</label>
+                                <label for="supplier_name">Supplier:</label>
                                 <select name="supplier_name" id="supplier_name" class="choices form-select" >
                                     @foreach ($vendors as $vendor)
-                                        <option value="{{ $vendor->id }}">{{ $vendor->name }} ({{$vendor->company_name}})</option>
+                                        <option value="{{ $vendor->id }}">{{$vendor->company_name}}</option>
                                     @endforeach
                                 </select>
                             </div>
-                        </div>
+                            </div>
+                            {{-- <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="supplier_name">Supplier:</label>
+                                    <select name="supplier_name" id="supplier_name_2" class="choices form-select">
+                                        <!-- Options will be dynamically populated based on the selection in the first select -->
+                                    </select>
+                                </div>
+                            </div> --}}
                             <div class="col-md-6 ">
 
                             </div>
 
 
+                            <script>
+                                // // Get references to the select elements
+                                // const firstSelect = document.getElementById('supplier_name');
+                                // const secondSelect = document.getElementById('supplier_name_2');
+
+                                // // Add event listener to the first select
+                                // firstSelect.addEventListener('change', function() {
+                                //     const selectedCompany = this.options[this.selectedIndex].getAttribute('data-company');
+                                //     populateSecondSelect(selectedCompany);
+                                // });
+
+                                // // Function to populate the second select based on the selected company
+                                // function populateSecondSelect(selectedCompany) {
+                                //     // Clear existing options
+                                //     secondSelect.innerHTML = '';
+
+                                //     // Filter vendors based on selected company
+                                //     const filteredVendors = @json($vendors->where('company_name', '!=', '')); // Assuming $vendors is a collection
+
+                                //     // Create new options for the second select
+                                //     filteredVendors.forEach(function(vendor) {
+                                //         const option = document.createElement('option');
+                                //         option.value = vendor.id;
+                                //         option.textContent = vendor.name;
+                                //         secondSelect.appendChild(option);
+                                //     });
+                                // }
+                            </script>
 
 
                             <div class="col-md-2 col-12">
@@ -198,7 +234,7 @@
                                 <div class="form-group">
 
                                     <input type="checkbox" id="pi_submitted" name="pi_submitted" >
-                                    <label for="pi_submitted" class="form-label">PI Submitted</label>
+                                    <label for="pi_submitted" class="form-label">Proforma Invoice</label>
                                     </div>
                             </div>
 

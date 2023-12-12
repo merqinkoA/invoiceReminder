@@ -19,7 +19,7 @@ class InvoiceReminderController extends Controller
         $now = Carbon::now();
         $timezone = Config::get('app.timezone');
         $vendors = Vendor::all();
-        $invoice_reminders = Invoice_Reminder::all();
+        $invoice_reminders = Invoice_Reminder::orderBy('ir_id', 'desc')->get();
         return view('layouts.invoiceReminder.index', compact('invoice_reminders','timezone','vendors'));
     }
 
@@ -41,7 +41,7 @@ class InvoiceReminderController extends Controller
 
 
     $validatedData = $request->validate([
-        'invoice_number' => 'nullable|numeric',
+        'invoice_number' => 'nullable|string',
         'supplier_name' => 'nullable|string',
         'currency' => 'nullable|string',
         'net_value' => 'nullable|string',

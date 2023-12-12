@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
@@ -27,6 +28,7 @@ class Reminder1Mail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            from: new Address('info@sumbawatimurmining.co.id', 'no-reply'),
             subject: 'PI Submit Reminder',
         );
     }

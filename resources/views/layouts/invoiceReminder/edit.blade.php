@@ -55,7 +55,7 @@
 
                             <div class="col-md-2 ">
                                 <div class="form-group">
-                                    <label for="supplier_name" class="form-label">Supplier Name</label>
+                                    <label for="supplier_name" class="form-label">Supplier</label>
                                    </div>
                             </div>
                             <div class="col-md-4">
@@ -66,7 +66,7 @@
                                     <select name="supplier_name" id="supplier_name" class="form-control">
                                         @foreach ($vendors as $vendor)
                                             <option value="{{ $vendor->id }}" @if ($vendor->id == $invoice_reminder->supplier_name) selected @endif>
-                                                {{ $vendor->name }} ({{ $vendor->company_name }})
+                                               {{$vendor->name}} ({{ $vendor->company_name }})
                                             </option>
                                         @endforeach
                                     </select>
@@ -78,6 +78,55 @@
                                 @endif
                                 </div>
                             </div>
+{{--
+                            <div class="col-md-2">
+                                <div class="form-group"> --}}
+
+                                    {{-- <input type="text" class="form-control form-control-sm" id="supplier_name" name="supplier_name" value="{{$invoice_reminder->supplier_name}}"  > --}}
+
+                                    {{-- <select name="supplier_name" id="supplier_name" class="form-control">
+                                        @foreach ($vendors as $vendor)
+                                            <option value="{{ $vendor->id }}" @if ($vendor->id == $invoice_reminder->supplier_name) selected @endif>
+                                                {{ $vendor->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                    @if ($errors->has('supplier_name'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('supplier_name') }}</strong>
+                                    </span>
+                                @endif
+                                </div>
+                            </div> --}}
+{{-- <script>
+    // Get references to the select elements
+    const firstSelect = document.getElementById('supplier_name');
+    const secondSelect = document.getElementById('supplier_name_2');
+
+    // Add event listener to the first select
+    firstSelect.addEventListener('change', function() {
+        const selectedCompany = this.options[this.selectedIndex].getAttribute('data-company');
+        populateSecondSelect(selectedCompany);
+    });
+
+    // Function to populate the second select based on the selected company
+    function populateSecondSelect(selectedCompany) {
+        // Clear existing options
+        secondSelect.innerHTML = '';
+
+        // Filter vendors based on selected company
+        const filteredVendors = @json($vendors->where('company_name', '!=', '')); // Assuming $vendors is a collection
+
+        // Create new options for the second select
+        filteredVendors.forEach(function(vendor) {
+            const option = document.createElement('option');
+            option.value = vendor.id;
+            option.textContent = vendor.name;
+            secondSelect.appendChild(option);
+        });
+    }
+</script> --}}
 
                             <div class="col-md-6 ">
 
@@ -128,7 +177,7 @@
                                     {{-- <label for="pi_submitted" class="form-label">PI Submitted</label>
                                     <input type="checkbox" id="pi_submitted" name="pi_submitted"{{ $invoice_reminder->pi_submitted==1? 'checked': '' }}> --}}
 
-                                    <label for="pi_submitted" class="form-label">PI Submitted</label>
+                                    <label for="pi_submitted" class="form-label">Proforma Invoice</label>
                                     <input type="checkbox" id="pi_submitted" name="pi_submitted"{{ $invoice_reminder->pi_submitted ? 'checked disabled' : '' }}>
                                     @if ($errors->has('pi_submitted'))
                                     <span class="help-block">
@@ -148,7 +197,7 @@
                                 </div>
                             </div>
 
-                            @if($invoice_reminder->pi_submitted)
+
 
                             <hr style="height:2px;border-width:0;color:gray;background-color:#0d6efd;">
 
@@ -191,13 +240,8 @@
                             <div class="col-md-6 col-12">
 
                             </div>
-                            @elseif($invoice_reminder->pi_submitted==false)
 
-                            @else
 
-                            @endif
-
-                         @if($invoice_reminder->invoice_submitted==true)
 
                             <hr  style="height:2px;border-width:0;color:gray;background-color:#0d6efd;">
 
@@ -232,11 +276,7 @@
                                     <input type="date" class="form-control form-control-sm" id="invoice_received_date" name="invoice_received_date" value="">
                                 </div> --}}
                             </div>
-                            @elseif($invoice_reminder->invoice_submitted==false)
 
-                            @else
-
-                            @endif
                             <div class="m-3">
                             </div>
 
@@ -254,7 +294,61 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript">
+    $(document).ready(function() {
+        // Function to check if the checkbox is checked and enable or disable fields
+        function checkCheckboxPI() {
+            var piSubmittedCheckbox = $('#pi_submitted');
 
+            // Check if the checkbox is checked
+            if (piSubmittedCheckbox.is(':checked')) {
+                // Enable the fields below the <hr> tag
+                $('#ses_migo_date').prop('disabled', false);
+                // $('#invoice_submitted').prop('disabled', false);
+                $('#po_number').prop('disabled', false);
+                $('#ses_migo_number').prop('disabled', false);
+
+            } else {
+                // Disable the fields below the <hr> tag
+                $('#ses_migo_date').prop('disabled', true);
+                $('#invoice_submitted').prop('disabled', true);
+                $('#po_number').prop('disabled', true);
+                $('#ses_migo_number').prop('disabled', true);
+
+            }
+
+        }
+        function checkCheckboxInvoice() {
+
+            var invoiceSubmittedCheckbox=$('#invoice_submitted');
+            // Check if the checkbox is checked
+
+            if (invoiceSubmittedCheckbox.is(':checked')) {
+                // Enable the fields below the <hr> tag
+
+                $('#due_date').prop('disabled', false);
+                $('#finance_status').prop('disabled', false);
+            } else {
+                // Disable the fields below the <hr> tag
+
+                $('#due_date').prop('disabled', true);
+                $('#finance_status').prop('disabled', true);
+            }
+        }
+        // Check the checkbox on document ready
+        checkCheckboxPI();
+        checkCheckboxInvoice();
+        // Add change event listener to the checkbox
+        $('#pi_submitted').change(function() {
+            // Call the checkCheckbox function when the checkbox state changes
+            checkCheckboxPI();
+        });
+        $('#invoice_submitted').change(function() {
+            // Call the checkCheckbox function when the checkbox state changes
+            checkCheckboxInvoice();
+        });
+    });
+    </script>
 {{--
 <script  type="text/javascript">
 
