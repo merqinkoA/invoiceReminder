@@ -1,156 +1,368 @@
 @extends('layouts.temp_index')
 
 @section('content')
+    <div class="container">
+        {{-- <div class="col-md-6 mb-12">
 
-
-<div class="container">
-    <div class="row justify-content-center">
-      <div class="col-6 col-md-12">
-
-  <div class="card">
-    <div class="card-header">
-        <h5 class="card-title"> Invoice Reminder</h5>
-                <div class="alert alert-danger" style="display:none"></div>
-
-@if ($errors->any())
-<div class="alert alert-danger">
-<ul>
-    @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-    @endforeach
-</ul>
-</div>
-@endif
-
-    {{-- @if (session()->has('success'))
-        <div class="alert alert-success">
-            {{ session()->get('success') }}
-        </div>
-    @endif --}}
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <strong>Invoice Reminder List</strong>
-            <a href="{{ route('invoiceReminder.create') }}" class="btn btn-primary btn-xs pull-right py-0">Create New Reminder</a>
-            {{-- {{$now}} --}} <div class="table-responsive">
-            <table class="table table-responsive table-bordered table-stripped" id="tableInvoiceReminder" style="margin-top:10px;">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Invoice Number</th>
-                        <th>Supplier Name</th>
-                        <th>Currency</th>
-                        <th>PR Number</th>
-{{--
-                        <th>PI</th>
-                        <th>Invoice</th>
-                        <th>SES/MIGO date</th>
-                        <th>PO Number</th>
-                        <th>SES/MIGO Number</th> --}}
-                        <th>Action</th>
-
-                </thead>
-
-                <tbody>
-                    @foreach ($invoice_reminders as $invoice_reminder)
-                    <tr>
-
-                        <td>{{ $invoice_reminder->ir_id }}</td>
-                        <td>{{ $invoice_reminder->invoice_number }}</td>
-                        <td>
-                            @foreach ($vendors as $vendor)
-                                @if ($invoice_reminder->supplier_name == $vendor->id)
-                                {{ $vendor->name }}  ({{ $vendor->company_name }})
-                                @endif
-                            @endforeach
-                        </td>
-
-                        <td>{{ $invoice_reminder->currency }} {{ number_format($invoice_reminder->net_value, 2, '.', ',') }}</td>
-                        <td>
-                        @foreach ($invoice_reminder->pr_number ? explode(',', $invoice_reminder->pr_number) : [] as $pr_number)
-                        <span class="badge bg-primary">{{ $pr_number }}</span>
+            <div class="form-group">
+                <select class="choices form-select multiple-remove" multiple="multiple">
+                    <option selected disabled>This is a placeholder</option>
+                    <optgroup label="PIC">
+                        @foreach ($picEmails as $picEmail)
+                            <option value="{{ $picEmail->$picEmail }}">
+                                {{ $picEmail->email }}</option>
                         @endforeach
-                        </td>
 
-                        <td>
-                            <a href="{{ route('invoiceReminder.show',$invoice_reminder->ir_id) }}" class="btn btn-sm btn-primary btn-xs py-0"><i class="bi bi-zoom-in"></i>
-                            </a>
-                            <a href="{{ route('invoiceReminder.edit',$invoice_reminder->ir_id) }}" class="btn btn-sm btn-warning btn-xs py-0"><i class="bi bi-pencil"></i></a>
-                            <form action="{{ route('invoiceReminder.destroy',$invoice_reminder->ir_id) }}" method="post">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="btn btn-sm btn-danger btn-xs py-0 show_confirm"><i class="bi bi-trash"></i></button>
-                            </form>
-                        </td>
-                    </tr>
+                    </optgroup>
+                    <optgroup label="User">
+                        @foreach ($userEmails as $userEmail)
+                            <option value="{{ $userEmail->$userEmail }}">
+                                {{ $userEmail->email }}</option>
+                        @endforeach
 
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                    </optgroup>
+                </select>
+            </div> --}}
+
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-6 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Invoice Reminder List</h5>
+                    <button onclick="addForm()" type="button" class="btn icon icon-left btn-primary block"
+                        data-bs-toggle="modal" data-bs-target="#addInvoiceModal">
+                        <i data-feather="file-plus"></i> Add New
+                    </button>
+                </div>
+                <div class="card-body">
+                    <table class="table" id="invoice-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Invoice Number</th>
+                                <th>Vendor</th>
+                                <th>Currency</th>
+                                <th>Net Value</th>
+                                <th>PR Number</th>
+                                <th>PO Number</th>
+                                <th>SES Number</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
 
         </div>
     </div>
+    </div>
 
-</div>
+    @include('layouts.invoiceReminder.form')
+@endsection
 
-</div>
-</div>
-</div>
-</div>
-</div>
+<script>
+    // $(document).ready(function() {
+    //     let rowCount = 1;
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
-
-
-<script type="text/javascript">
-
-    // $(document).ready(function () {
-    //     var table = $('#tableInvoiceReminder').DataTable();
-
-    //     // Add a click event listener to the "Toggle" button
-    //     $('#tableInvoiceReminder tbody').on('click', 'button.toggle-row', function () {
-    //         var tr = $(this).closest('tr');
-    //         var row = table.row(tr);
-
-    //         // Toggle the row's visibility
-    //         if (row.child.isShown()) {
-    //             // This row is open, so close it
-    //             row.child.hide();
-    //             tr.removeClass('shown');
-    //         } else {
-    //             // Open this row
-    //             row.child(tr.next('.collapsible-row')).show();
-    //             tr.addClass('shown');
-    //         }
+    //     $('#add-row').on('click', function() {
+    //         rowCount++;
+    //         let newRow = `
+    //             <tr>
+    //                 <td>
+    //                     <input type="text" name="id[]" class="form-control" value="${rowCount}" required>
+    //                 </td>
+    //                 <td>
+    //                     <input type="text" name="pr_number[]" class="form-control" required>
+    //                 </td>
+    //                 <!-- Add other table data cells as needed -->
+    //             </tr>
+    //         `;
+    //         $('#table-body').append(newRow);
     //     });
     // });
-    </script>
-
-<script type="text/javascript">
-
-     $('.show_confirm').click(function(event) {
-          var form =  $(this).closest("form");
-          var name = $(this).data("name");
-          event.preventDefault();
-          swal({
-              title: `Are you sure you want to delete this record?`,
-              text: "If you delete this, it will be gone forever.",
-              icon: "warning",
-              buttons: true,
-              dangerMode: true,
-          })
-          .then((willDelete) => {
-            if (willDelete) {
-              form.submit();
-            }
-          });
-      });
-
+    // function addRow() {
+    //     var tr = '<tr>' +
+    //         '<td><input type="number" name="rows[0][qty]" class="form-control quantity"></td>' +
+    //         '<td><input type="text" name="rows[0][unit]" class="form-control quantity"></td>' +
+    //         '<td><input type="text" name="rows[0][description]" class="form-control quantity"></td>' +
+    //         '<td><a class="btn btn-danger remove"><i class="fas fa-times"></i></a></td>' +
+    //         '</tr>';
+    //     $('tbody').append(tr);
+    // }
 </script>
 
+@section('bot')
+    <script type="text/javascript">
+        var table = $('#invoice-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('api.invoice') }}",
+            columns: [{
+                    data: 'ir_id',
+                    name: 'ir_id',
+                    title: 'ID',
+                },
+                {
+                    data: 'invoice_number',
+                    name: 'invoice_number',
+                    title: 'Invoice Number',
+                },
+                {
+                    data: 'vendor_name', // Update to use the new column
+                    name: 'vendor_id', // Update to use the new column
+                    title: 'Vendor',
+                },
+                {
+                    data: 'currency',
+                    name: 'currency',
+                    title: 'Currency',
+
+                },
+                {
+                    data: 'net_value',
+                    name: 'net_value',
+                    title: 'Net Value',
+                },
+                {
+                    data: 'pr_number',
+                    name: 'pr_number',
+                    render: function(data, type, row) {
+                        if (type === 'display' && data) {
+                            var prNumbers = data.split(',');
+                            var html = '<div class="text-end">';
+                            for (var i = 0; i < prNumbers.length; i++) {
+                                html += '<span class="badge bg-primary">' + prNumbers[i] + '</span>&nbsp;';
+                            }
+                            html += '</div>';
+                            return html;
+                        }
+                        return data;
+                    }
+                }, {
+                    data: 'po_number',
+                    name: 'po_number',
+                    render: function(data, type, row) {
+                        if (type === 'display' && data) {
+                            var poNumbers = data.split(',');
+                            var html = '<div class="text-end">';
+                            for (var i = 0; i < poNumbers.length; i++) {
+                                html += '<span class="badge bg-primary">' + poNumbers[i] + '</span>&nbsp;';
+                            }
+                            html += '</div>';
+                            return html;
+                        }
+                        return data;
+                    }
+                },
+                {
+                    data: 'ses_migo_number',
+                    name: 'ses_migo_number',
+                    render: function(data, type, row) {
+                        if (type === 'display' && data) {
+                            var sesNumbers = data.split(',');
+                            var html = '<div class="text-end">';
+                            for (var i = 0; i < sesNumbers.length; i++) {
+                                html += '<span class="badge bg-primary">' + sesNumbers[i] + '</span>&nbsp;';
+                            }
+                            html += '</div>';
+                            return html;
+                        }
+                        return data;
+                    }
+                }, {
+                    data: 'status',
+                    name: 'status',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                }
+            ]
+        });
+
+        function addForm() {
+            save_method = "add";
+            $('input[name=_method]').val('POST');
+            $('#modal-form form')[0]
+                .reset(); // Resetting the tags input fields manually $('#email_to').tagsinput('removeAll');
+            $('#email_cc').tagsinput('removeAll');
+            $('#net_value').val(',000');
+
+            $('#pr_number').tagsinput('removeAll');
+            $('#po_number').tagsinput('removeAll');
+            $('#ses_migo_number').tagsinput('removeAll');
+            $('#modal-form').modal('show');
+            $('.modal-title').text('Add Invoice Reminder');
+        }
+
+        function editForm(id) {
+            save_method = 'edit';
+            $('input[name=_method]').val('PATCH');
+            $('#modal-form form')[0].reset();
+            $('#email_to, #email_cc, #pr_number, #po_number, #ses_migo_number').tagsinput('removeAll');
+            $('#ses_migo_date, #invoice_submitted, #po_number, #ses_migo_number').prop('readonly', false);
+            $('#invoice_number, #vendor_id, #currency, #net_value, #pr_number').prop('readonly', false);
+            $.ajax({
+                url: "{{ url('invoiceReminder') }}" + '/' + id + "/edit",
+                type: "GET",
+                dataType: "JSON",
+                success: function(data) {
+
+                    $('#modal-form').modal('show');
+                    $('.modal-title').text('Edit Invoice Reminder');
+                    $('#ir_id').val(data.ir_id);
+                    $('#invoice_number').val(data.invoice_number);
+                    $('#vendor_id').val(data.vendor_id);
+                    $('#vendor_id').text(data.vendor_info);
+                    // $('#email_to').val(data.email_to);
+                    $('#email_cc').val(data.email_cc);
+                    $('#currency').val(data.currency);
+                    $('#net_value').val(data.net_value);
+                    $('#pr_number').val(data.pr_number);
+                    $('#pi_submitted').prop('checked', data.pi_submitted);
+                    $('#ses_migo_date').val(data.ses_migo_date);
+                    $('#invoice_submitted').prop('checked', data.invoice_submitted);
+                    $('#due_date').val(data.due_date);
+                    $('#finance_status').val(data.finance_status);
+                    if (data.pi_submitted) {
+                        $('#pi_submitted').prop('checked', true);
+                    } else {
+                        $('#pi_submitted').prop('checked', false);
+                    }
+                    if (data.invoice_submitted) {
+                        $('#invoice_submitted').prop('checked', true);
+                    } else {
+                        $('#invoice_submitted').prop('checked', false);
+                    }
+
+                    var emailcc = data.email_cc ? data.email_cc.split(',') : [];
+                    $('#email_cc').tagsinput('removeAll');
+                    for (var i = 0; i < emailcc.length; i++) {
+                        $('#email_cc').tagsinput('add', emailcc[i]);
+                    }
+
+                    var prNumbers = data.pr_number ? data.pr_number.split(',') : [];
+                    $('#pr_number').tagsinput('removeAll');
+                    for (var i = 0; i < prNumbers.length; i++) {
+                        $('#pr_number').tagsinput('add', prNumbers[i]);
+                    }
+
+                    var poNumbers = data.po_number ? data.po_number.split(',') : [];
+                    $('#po_number').tagsinput('removeAll');
+                    for (var i = 0; i < poNumbers.length; i++) {
+                        $('#po_number').tagsinput('add', poNumbers[i]);
+                    }
+
+                    var sesMigoNumbers = data.ses_migo_number ? data.ses_migo_number.split(',') : [];
+                    $('#ses_migo_number').tagsinput('removeAll');
+                    for (var i = 0; i < sesMigoNumbers.length; i++) {
+                        $('#ses_migo_number').tagsinput('add', sesMigoNumbers[i]);
+                    }
+
+                },
+
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText); // Log the error message to console
+                    alert("Error: Unable to fetch data"); // Display an alert to the user
+                }
+            });
+        }
+
+
+        // Handle error console.error(xhr.responseText); } }); }
+        function deleteData(id) {
+            var csrf_token = $('meta[name="csrf-token" ]').attr('content');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonColor: '#d33',
+                confirmButtonColor: '#435ebe',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ url('invoiceReminder') }}" + '/' + id,
+                        type: "POST",
+                        data: {
+                            '_method': 'DELETE',
+                            '_token': csrf_token
+                        },
+                        success: function(data) {
+                            table.ajax.reload();
+                            Swal.fire({
+                                title: 'Success!',
+                                text: data.message,
+                                icon: 'success',
+                                timer: '1500'
+                            })
+                        },
+                        error: function() {
+                            Swal.fire({
+                                title: 'Oops...',
+                                text: data.message,
+                                icon: 'error',
+                                timer: '1500'
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
+        $(function() {
+
+            $('#modal-form form').on('submit', function(e) {
+                if (!e.isDefaultPrevented()) {
+                    var id = $('#ir_id').val();
+                    if (save_method == 'add') url = "{{ url('invoiceReminder') }}";
+                    else url = "{{ url('invoiceReminder') . '/' }}" + id;
+                    console.log('Submitted data:', new FormData($("#modal-form form")[0]));
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        //hanya untuk input data tanpa dokumen
+                        // data : $('#modal-form form').serialize(),
+                        data: new FormData($("#modal-form form")[0]),
+                        contentType: false,
+                        processData: false,
+                        success: function(data) {
+                            $('#modal-form').modal('hide');
+                            table.ajax.reload();
+                            Swal.fire({
+                                title: 'Success!',
+                                text: data.message,
+                                icon: 'success',
+                                timer: '1500'
+                            })
+                        },
+                        error: function(xhr, status, error) {
+                            var errorMessage = xhr.status + ': ' + xhr.statusText;
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                errorMessage = xhr.responseJSON.message;
+                            }
+                            Swal.fire({
+                                title: 'Oops...',
+                                text: errorMessage,
+                                icon: 'error',
+                                timer: '1111111500'
+                            });
+                        }
+                    });
+                    return false;
+                }
+            });
+        });
+    </script>
 @endsection

@@ -19,8 +19,8 @@
 <link href="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" rel="stylesheet" />
 <link rel="stylesheet" href="{{ asset('assets') }}/extensions/choices.js/public/assets/styles/choices.css">
 
-
-{{-- <link rel="stylesheet" href="{{asset('assets')}}/extensions/sweetalert2/sweetalert2.min.css"> --}}
+<link href="{{ asset('assets') }}/extensions/select2/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="{{ asset('assets') }}/extensions/sweetalert2/sweetalert2.min.css">
 <!-- {{-- <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet"> --}}
 {{-- <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css"> --}}
 {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous"> --}}

@@ -3,6 +3,7 @@
 use App\Http\Controllers\InvoiceReminderController;
 use App\Http\Controllers\dueDateController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\PicController;
 use Illuminate\Support\Facades\Route;
 use App\Models\invoice_reminder;
 use Carbon\Carbon;
@@ -27,23 +28,43 @@ use Illuminate\Support\Facades\Config;
 Auth::routes();
 
 // Route::get('/', [HomeController::class, 'index'])->name('home');
-
 Route::get('/', function () {
-    $now = Carbon::now();
-    $timezone = Config::get('app.timezone');
-    $vendors = Vendor::all();
-    $invoice_reminders = Invoice_Reminder::all();
-    // return view('layouts.invoiceReminder.index', compact('invoice_reminders','timezone','vendors'));
-    return view('layouts.invoiceReminder.index',  compact('invoice_reminders','timezone','vendors'));
+    return view('auth.login');
 });
+// Route::get('/', function () {
+//     $now = Carbon::now();
+//     $timezone = Config::get('app.timezone');
+//     $vendors = Vendor::all();
+//     $invoice_reminders = Invoice_Reminder::all();
+//     // return view('layouts.invoiceReminder.index', compact('invoice_reminders','timezone','vendors'));
+//     return view('layouts.invoiceReminder.index',  compact('invoice_reminders','timezone','vendors'));
+// });
 
 
-Route::resource('invoiceReminder', InvoiceReminderController::class)->middleware('auth');
-Route::resource('vendor', VendorController::class)->middleware('auth');
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('invoiceReminder', InvoiceReminderController::class)->middleware('auth');
+    Route::get('/apiInvoiceReminder', [InvoiceReminderController::class, 'apiInvoiceReminder'])->name('api.invoice');
+});
 // Route::post('/invoiceReminder/passData', 'InvoiceReminderController@passData');
 
+Route::get('/get-vendor-emails', [VendorController::class, 'getVendorEmails'])->name('getVendorEmails');
 
 
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('vendor', VendorController::class)->middleware('auth');
+    // Route::resource('vendor', 'VendorController');
+    Route::get('/apiVendor', [VendorController::class, 'apiVendor'])->name('api.vendor');
+    // Route::get('/apiVendor', 'VendorController@apiVendor')->name('api.vendor');
+});
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('pic', PicController::class)->middleware('auth');
+    // Route::resource('vendor', 'VendorController');
+    Route::get('/apiPic', [PicController::class, 'apiPic'])->name('api.pic');
+    Route::get('/get-pic-emails',  [PicController::class, 'getPICEmails'])->name('get.pic.emails');
+
+    // Route::get('/apiVendor', 'VendorController@apiVendor')->name('api.vendor');
+});
 // Route::delete('/invoiceReminder/{pr_number}', [InvoiceReminderController::class, 'destroy'])->name('invoiceReminder.destroy');
 // Route::post('/invoice-reminder/send-email/{pr_number}', [InvoiceReminderController::class, 'sendEmail'])->name('invoiceReminder.sendEmail');
 

@@ -13,14 +13,21 @@ use Illuminate\Queue\SerializesModels;
 class Reminder2Mail extends Mailable
 {
     use Queueable, SerializesModels;
-
+    public $emailData;
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($emailData)
     {
         //
+        $this->emailData = $emailData;
     }
+    // public function build()
+    // {
+    //     return $this->subject('Subject of the Email')
+    //         ->view('emails.IRtemplate') // Replace 'your_template' with your email template blade file
+    //         ->with(['emailData' => $this->emailData]); // Pass data to the email template
+    // }
 
     /**
      * Get the message envelope.
@@ -28,7 +35,7 @@ class Reminder2Mail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('info@sumbawatimurmining.co.id', 'no-reply'),
+            from: new Address('info@sumbawatimurmining.co.id', 'Sumbawa Timur Mining'),
             subject: 'Invoice Submit Reminder',
         );
     }

@@ -8,16 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Vendor extends Model
 {
     use HasFactory;
-    protected $table ='vendors';
+    protected $table = 'vendors';
     protected $primaryKey = 'id';
     protected $fillable = [
-
+        'vendor_sap_id',
         'name',
         'email',
         'phone',
         'website',
         'address',
-        'company_name',
+        'address_sap',
 
     ];
+    public function invoiceReminders()
+    {
+        return $this->hasMany(InvoiceReminder::class);
+    }
 }

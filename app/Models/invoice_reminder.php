@@ -4,36 +4,37 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class invoice_reminder extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $table = 'invoice_reminder';
     protected $primaryKey = 'ir_id';
     protected $fillable = [
         'invoice_number',
         'pr_number',
-        'supplier_name',
+        'vendor_id',
         'pi_submitted_date',
-        'created_at_1',
-        'updated_at_1',
         'po_number',
         'invoice_date',
-        'SES_MIGO_number',
-        'SES_MIGO_date',
+        'ses_migo_number',
+        'ses_migo_date',
         'invoice_received_date',
         'invoice_submitted_date',
-        'created_at_2',
-        'updated_at_2',
         'currency',
         'net_value',
         'finance_reminder',
         'finance_status',
-        'created_at_3',
-        'updated_at_3',
         'due_date',
         'email_status',
         'ir_status',
+        'email_to',
+        'email_cc',
+        'reminder_pi_date',
+        'reminder_invoice_date',
+        'reminder_finance_date',
         // 'pi_submitted',
         // 'invoice_submitted',
     ];
@@ -42,4 +43,9 @@ class invoice_reminder extends Model
         'pi_submitted' => 'boolean',
         'invoice_submitted' => 'boolean',
     ];
+    protected $dates = ['deleted_at'];
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class);
+    }
 }

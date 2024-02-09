@@ -10,6 +10,14 @@ import axios from 'axios';
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+// resources/js/bootstrap.js
+
+try {
+    window.$ = window.jQuery = require('jquery');
+
+    // Include Select2
+    require('select2');
+} catch (e) { }
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

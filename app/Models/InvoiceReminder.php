@@ -34,4 +34,8 @@ class InvoiceReminder extends Model
         'pr_approved' => 'boolean',
         'bast_status' => 'boolean',
     ];
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class);
+    }
 }

@@ -13,22 +13,23 @@ use Illuminate\Queue\SerializesModels;
 class Reminder3Mail extends Mailable
 {
     use Queueable, SerializesModels;
-
+    public $emailData;
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($emailData)
     {
         //
+        $this->emailData = $emailData;
     }
-
+    //
     /**
      * Get the message envelope.
      */
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('info@sumbawatimurmining.co.id', 'no-reply'),
+            from: new Address('info@sumbawatimurmining.co.id', 'Sumbawa Timur Mining'),
             subject: 'Finance Status Reminder',
         );
     }

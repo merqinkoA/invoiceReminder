@@ -13,23 +13,30 @@ use Illuminate\Queue\SerializesModels;
 class Reminder1Mail extends Mailable
 {
     use Queueable, SerializesModels;
+    public $emailData;
 
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($emailData)
     {
         //
+        $this->emailData = $emailData;
     }
-
+    // public function build()
+    // {
+    //     return $this->subject('Subject of the Email')
+    //                 ->view('emails.IRtemplate') // Replace 'your_template' with your email template blade file
+    //                 ->with(['emailData' => $this->emailData]); // Pass data to the email template
+    // }
     /**
      * Get the message envelope.
      */
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('info@sumbawatimurmining.co.id', 'no-reply'),
-            subject: 'PI Submit Reminder',
+            from: new Address('Finance@sumbawatimurmining.co.id', 'STM Invoice Reminder[No-Reply]'),
+            subject: 'Proforma/Draft Invoice Reminder [No-Reply]',
         );
     }
 
